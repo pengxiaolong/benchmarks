@@ -2,14 +2,10 @@ package personal.xlpeng.benchmarks.allocationlatency;
 
 import org.HdrHistogram.Histogram;
 
-import java.net.DatagramSocket;
-
 public class AllocationLatency {
     static volatile byte[] sink;
     // A Histogram covering the range from 1 nsec to 1 hour with 3 decimal point resolution:
     static Histogram histogram = new Histogram(3600000000000L, 3);
-
-    static public volatile DatagramSocket socket;
 
     static long WARMUP_TIME_MSEC = 5000;
     static long RUN_TIME_MSEC = 20000;
