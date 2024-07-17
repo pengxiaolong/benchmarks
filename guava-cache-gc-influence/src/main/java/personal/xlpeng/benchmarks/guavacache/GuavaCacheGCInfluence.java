@@ -2,7 +2,9 @@ package personal.xlpeng.benchmarks.guavacache;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import net.openhft.chronicle.map.ChronicleMapBuilder;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -17,10 +19,16 @@ public class GuavaCacheGCInfluence {
             .recordStats()
             .build();
 
+    public static Map<Integer, byte[]> offHeapCache = ChronicleMapBuilder.of(Integer.class, byte[].class)
+            .averageValueSize(3072)
+            .entries(60000)
+            .create();
+
     public static Random random = new Random();
 
     public static void main(String[] args) {
         final boolean useCache = Set.of(args).contains("--use-cache");
+        final boolean offHeap = Set.of(args).contains("--off-heap");
         final long start = System.currentTimeMillis();
         for (int i = 0; i < 8; i++) {
             new Thread() {
@@ -28,7 +36,7 @@ public class GuavaCacheGCInfluence {
                 @Override
                 public void run() {
                     while(System.currentTimeMillis() - start < 300000) {
-                        sink = useCache ? createDummyDataWithCache() : createDummyData();
+                        sink = useCache ? (offHeap ? createDummyDataWithOffHeapCache() : createDummyDataWithCache()) : createDummyData();
                     }
                 }
             }.start();
@@ -46,5 +54,13 @@ public class GuavaCacheGCInfluence {
         } catch (ExecutionException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static byte[] createDummyDataWithOffHeapCache() {
+        Integer key = random.nextInt(100000);
+        if (!offHeapCache.containsKey(key)) {
+            offHeapCache.put(key, createDummyData());
+        }
+        return offHeapCache.get(key);
     }
 }
