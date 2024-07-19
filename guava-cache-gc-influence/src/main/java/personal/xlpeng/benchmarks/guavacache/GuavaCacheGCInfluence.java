@@ -11,24 +11,32 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 public class GuavaCacheGCInfluence {
-    public static Cache<Integer, byte[]> cache = CacheBuilder.newBuilder()
-            .initialCapacity(60000)
-            .maximumSize(60000)
-            .concurrencyLevel(8)
-            .expireAfterAccess(5184000, TimeUnit.SECONDS)
-            .recordStats()
-            .build();
+    public static Cache<Integer, byte[]> cache = null;
 
-    public static Map<Integer, byte[]> offHeapCache = ChronicleMapBuilder.of(Integer.class, byte[].class)
-            .averageValueSize(3072)
-            .entries(60000)
-            .create();
+    public static Map<Integer, byte[]> offHeapCache = null;
 
     public static Random random = new Random();
 
     public static void main(String[] args) {
         final boolean useCache = Set.of(args).contains("--use-cache");
         final boolean offHeap = Set.of(args).contains("--off-heap");
+        if (useCache) {
+            if (offHeap) {
+                offHeapCache = ChronicleMapBuilder.of(Integer.class, byte[].class)
+                        .averageValueSize(3072)
+                        .entries(60000)
+                        .create();
+            } else {
+                cache = CacheBuilder.newBuilder()
+                        .initialCapacity(60000)
+                        .maximumSize(60000)
+                        .concurrencyLevel(8)
+                        .expireAfterAccess(5184000, TimeUnit.SECONDS)
+                        .recordStats()
+                        .build();
+            }
+        }
+
         final long start = System.currentTimeMillis();
         for (int i = 0; i < 8; i++) {
             new Thread() {
