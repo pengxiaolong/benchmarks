@@ -15,7 +15,7 @@ import java.util.concurrent.CountDownLatch;
 public class MultiThreadAllocationLatency {
     static volatile byte[] sink;
     static final long WARMUP_TIME_MSEC = 10000;
-    static final long RUN_TIME_MSEC = 15000;
+    static final long RUN_TIME_MSEC = 20000;
     static final int[] DATA_SIZES = {10, 100, 1000, 10000, 100000, 1_000_000, 10_000_000, 100_000_000};
     static final int threadCount = Runtime.getRuntime().availableProcessors();
 

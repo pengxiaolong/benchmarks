@@ -14,7 +14,7 @@ import java.time.Instant;
 public class AllocationLatency {
     static volatile byte[] sink;
     static long WARMUP_TIME_MSEC = 10000;
-    static long RUN_TIME_MSEC = 15000;
+    static long RUN_TIME_MSEC = 20000;
     static int[] DATA_SIZES = {10, 100, 1000, 10000, 100000, 1_000_000, 10_000_000, 100_000_000};
 
     static void recordTimeToAllocate(final int dataSize, final Histogram histogram) {
