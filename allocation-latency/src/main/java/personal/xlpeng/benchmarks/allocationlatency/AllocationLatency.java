@@ -41,7 +41,7 @@ public class AllocationLatency {
             recordTimeToAllocate(dataSize, histogram);
             now = System.currentTimeMillis();
         } while (now - startTime < RUN_TIME_MSEC);
-        histogram.setStartTimeStamp(System.currentTimeMillis());
+        histogram.setEndTimeStamp(System.currentTimeMillis());
 
         return histogram;
     }

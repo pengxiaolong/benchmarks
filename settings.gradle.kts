@@ -12,4 +12,5 @@ plugins {
 
 rootProject.name = "benchmarks"
 include("allocation-latency")
+include("multi-thread-allocation-latency")
 include("guava-cache-gc-influence")
