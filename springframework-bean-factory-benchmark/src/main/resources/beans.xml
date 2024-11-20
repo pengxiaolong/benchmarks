@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation=
+               "http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <util:map id="configMap">
+        <entry key="key-1" value="value-1"/>
+        <entry key="key-2" value="value-2"/>
+        <entry key="key-3" value="value-3"/>
+    </util:map>
+
+    <bean id="configs" class="personal.xlpeng.benchmarks.springframework.beanfactory.Configurations">
+        <constructor-arg ref="configMap"/>
+    </bean>
+
+    <bean id="aService" class="personal.xlpeng.benchmarks.springframework.beanfactory.AService" scope="prototype">
+        <constructor-arg ref="configs"/>
+    </bean>
+
+    <bean id="aServiceWithMap" class="personal.xlpeng.benchmarks.springframework.beanfactory.AServiceWithMap" scope="prototype">
+        <constructor-arg ref="configMap"/>
+    </bean>
+
+    <util:set id="stringSet">
+        <value>value 1</value>
+        <value>value 2</value>
+        <value>value 3</value>
+    </util:set>
+    <bean id="aServiceWithSet" class="personal.xlpeng.benchmarks.springframework.beanfactory.AServiceWithSet" scope="prototype">
+        <constructor-arg ref="stringSet"/>
+    </bean>
+</beans>
