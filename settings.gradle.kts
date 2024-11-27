@@ -16,4 +16,4 @@ include("multi-thread-allocation-latency")
 include("guava-cache-gc-influence")
 include("jmh-unmodifiable-collections")
 include("springframework-bean-factory-benchmark")
-
+include("counters")
